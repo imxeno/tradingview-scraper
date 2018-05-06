@@ -12,7 +12,7 @@ app.get('/api/v1/pair/:pair', function (req, res) {
     var ticker_name = req.params.pair;
     
     tradingView.getTicker(ticker_name, function(api_err, data) {
-        req.json(data);
+        res.json(data);
     });
 })
 
