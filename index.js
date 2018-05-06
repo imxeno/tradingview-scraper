@@ -19,6 +19,6 @@ app.get('/api/v1/pair/:pair', function (req, res) {
 // listen
 fs.unlink("api.sock", function() {
   app.listen("api.sock", function() {
-    fs.chmod('api.sock', 777, function() {});
+    fs.chmod('api.sock', 0777, function() {});
   });
 });
