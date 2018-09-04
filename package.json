@@ -28,6 +28,6 @@
     "type": "git",
     "url": "https://github.com/imxeno/tradingview-scraper.git"
   },
-  "author": "Xeno",
+  "author": "Piotr Adamczyk <xeno@xeno.yt>",
   "license": "ISC"
 }
