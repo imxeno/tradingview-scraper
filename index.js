@@ -1,3 +1,1 @@
-'use strict';
-
-module.exports = require('./lib/tradingview');
+module.exports = require('./lib/tradingView');
