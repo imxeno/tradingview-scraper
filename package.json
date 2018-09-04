@@ -18,7 +18,7 @@
   "main": "index.js",
   "dependencies": {
     "randomstring": "^1.1.5",
-    "ws": "^5.1.1"
+    "ws": "^6.0.0"
   },
   "devDependencies": {},
   "scripts": {
