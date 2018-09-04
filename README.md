@@ -1,5 +1,8 @@
 TradingView Scraper for Node.js
 ================================
+[![npm version](https://img.shields.io/npm/v/tradingview-scraper.svg)](https://npmjs.com/package/tradingview-scraper)
+[![dependencies](https://img.shields.io/david/imxeno/tradingview-scraper.svg)](https://david-dm.org/imxeno/tradingview-scraper)
+![license](https://img.shields.io/npm/l/tradingview-scraper.svg)
 
 Really basic TradingView data scraper for Node.js.  
 *warning: the implementation is a little bit dirty, but hey, it works!*
