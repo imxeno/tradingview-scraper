@@ -1,6 +1,6 @@
 {
   "name": "tradingview-scraper",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A gateway to TradingView's data for your Node.js application!",
   "main": "index.js",
   "dependencies": {
