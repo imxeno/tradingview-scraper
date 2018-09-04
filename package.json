@@ -1,7 +1,20 @@
 {
   "name": "tradingview-scraper",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A gateway to TradingView's data for your Node.js application!",
+  "keywords": [
+    "tradingview",
+    "scraper",
+    "scraping",
+    "trading",
+    "view",
+    "ticker",
+    "prices",
+    "cryptocurrency",
+    "crypto",
+    "symbol",
+    "forex"
+  ],
   "main": "index.js",
   "dependencies": {
     "randomstring": "^1.1.5",
