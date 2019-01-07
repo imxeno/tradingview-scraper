@@ -25,7 +25,7 @@ Featuring
 Constructor
 --------------------
 ```javascript
-const TradingViewAPI = require('tradingview-api');
+const TradingViewAPI = require('tradingview-scraper');
 const tv = new TradingViewAPI();
 ```
 ### new TradingViewAPI()
