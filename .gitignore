@@ -1,6 +1,7 @@
 # Node.js
 
-/node_modules
+node_modules/
+.npm
 
 # TypeScript build files
 
