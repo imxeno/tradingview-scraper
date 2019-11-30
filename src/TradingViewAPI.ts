@@ -6,7 +6,7 @@ import * as SIO from "./IOProtocol";
 export class TradingViewAPI {
   private ws!: WebSocket;
   private tickerData: { [key: string]: any } = {};
-  private subscriptions: ProName[] = [];
+  private subscriptions: TickerName[] = [];
   private session!: string;
   private sessionRegistered = false;
 
@@ -81,7 +81,7 @@ export class TradingViewAPI {
     this.ws.send(SIO.createMessage(func, args));
   }
 
-  private _registerTicker(ticker: ProName) {
+  private _registerTicker(ticker: TickerName) {
     if (this.subscriptions.indexOf(ticker) !== -1) {
       return;
     }
@@ -95,7 +95,7 @@ export class TradingViewAPI {
     );
   }
 
-  private _unregisterTicker(ticker: ProName) {
+  private _unregisterTicker(ticker: TickerName) {
     const index = this.subscriptions.indexOf(ticker);
     if (index === -1) {
       return;
@@ -106,7 +106,7 @@ export class TradingViewAPI {
     );
   }
 
-  private _deleteTicker(ticker: ProName) {
+  private _deleteTicker(ticker: TickerName) {
     this._unregisterTicker(ticker);
     delete this.tickerData[ticker];
   }
