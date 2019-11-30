@@ -35,8 +35,6 @@ export class TradingViewAPI {
     });
   }
 
-  // private
-
   private _getTicker(
     tickerName: string,
     resolve: (data: TickerData) => void,
