@@ -2,6 +2,10 @@
 
 /node_modules
 
+# TypeScript build files
+
+dist/
+
 # Visual Studio Code
 
 .vscode/*
