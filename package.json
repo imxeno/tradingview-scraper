@@ -29,6 +29,8 @@
   },
   "scripts": {
     "build": "tsc",
+    "lint": "tslint --project ./",
+    "prepublish": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
