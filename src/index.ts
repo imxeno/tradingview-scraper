@@ -1,1 +1,4 @@
-export { TradingViewAPI } from "./TradingViewAPI";
+import { TradingViewAPI } from "./TradingViewAPI";
+
+export { TradingViewAPI };
+export default TradingViewAPI;

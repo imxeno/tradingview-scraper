@@ -1,12 +1,14 @@
-export const parseMessages = (str: string): any[] => {
+import { ISIOPacket } from "./SIOPacket";
+
+export const parseMessages = (str: string): ISIOPacket[] => {
   const packets = [];
   while (str.length > 0) {
     const x = /~m~(\d+)~m~/.exec(str);
     const packet = str.slice(x![0].length, x![0].length + parseInt(x![1], 10));
     if (packet.substr(0, 3) !== "~h~") {
-      packets.push(JSON.parse(packet));
+      packets.push({ isKeepAlive: false, data: JSON.parse(packet) });
     } else {
-      packets.push({ "~protocol~keepalive~": packet.substr(3) });
+      packets.push({ isKeepAlive: true, data: packet.substr(3) });
     }
 
     str.slice(0, x![0].length);
@@ -19,11 +21,11 @@ export const prependHeader = (str: string) => {
   return "~m~" + str.length + "~m~" + str;
 };
 
-export const createMessage = (func: string, paramList: MessageArguments) => {
+export const createMessage = (func: string, paramList: any[]) => {
   return prependHeader(constructMessage(func, paramList));
 };
 
-const constructMessage = (func: string, paramList: MessageArguments) => {
+const constructMessage = (func: string, paramList: any[]) => {
   return JSON.stringify({
     m: func,
     p: paramList
