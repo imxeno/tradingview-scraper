@@ -84,7 +84,7 @@ _warning: The request will timeout if the `ticker` does not exist on TradingView
 
 ISC License
 
-Copyright (c) 2018, Piotr Adamczyk
+Copyright (c) 2018-2019, Piotr Adamczyk
 
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
