@@ -1,11 +1,11 @@
 import { EventEmitter } from 'events';
 import randomstring from 'randomstring';
-import WebSocket from 'ws';
-import { allQuoteFields } from './consts/QuoteFields';
 import TypedEmitter from 'typed-emitter';
+import WebSocket from 'ws';
 
-import * as SIO from './utils/SIOProtocol';
+import { allQuoteFields } from './consts/QuoteFields';
 import { SIOPacket } from './interfaces/SIOPacket';
+import * as SIO from './utils/SIOProtocol';
 
 type MessageEvents = {
   data: (simpleOrProName: string, status: string, data: any) => void;

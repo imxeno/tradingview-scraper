@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
-import { TradingViewAPI } from './TradingViewAPI';
 import TypedEmitter from 'typed-emitter';
+
+import { TradingViewAPI } from './TradingViewAPI';
 import { TickerData } from './interfaces/TickerData';
 
 type MessageEvents = {
