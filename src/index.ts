@@ -1,4 +1,4 @@
-import { TradingViewAPI } from './tradingViewAPI';
+import { TradingViewAPI } from './TradingViewAPI';
 
 export { TradingViewAPI };
 export default TradingViewAPI;
