@@ -17,7 +17,7 @@ export class TradingViewAPI {
       subs.forEach((s: TickerSubscription) => {
         if (s.canBeDestroyed) {
           subs.delete(s);
-          s.onDestroy();
+          s.destroyed = true;
           if (subs.size === 0) {
             this.ws.unregisterSymbol(s.simpleOrProName);
             this.subscriptionMap.delete(s.simpleOrProName);

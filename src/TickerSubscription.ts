@@ -1,14 +1,20 @@
 import { EventEmitter } from "events";
 import { TradingViewAPI } from "./TradingViewAPI";
+import TypedEmitter from "typed-emitter";
 
 type TickerData = any;
 
-export class TickerSubscription extends EventEmitter {
-  public simpleOrProName: string;
-  public due!: number;
+type MessageEvents = {
+  newListener: () => void;
+  update: (ticketData: any) => void;
+};
+
+export class TickerSubscription extends (EventEmitter as new () => TypedEmitter<MessageEvents>) {
+  simpleOrProName: string;
+  due!: number;
   private api: TradingViewAPI;
   private tickerData: TickerData;
-  private destroyed = false;
+  destroyed = false;
 
   constructor(api: TradingViewAPI, simpleOrProName: string) {
     super();
@@ -40,10 +46,6 @@ export class TickerSubscription extends EventEmitter {
 
   public get canBeDestroyed() {
     return this.due < Date.now() && this.listenerCount("update") === 0;
-  }
-
-  public onDestroy() {
-    this.destroyed = true;
   }
 
   private refreshDue() {

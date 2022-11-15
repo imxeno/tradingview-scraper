@@ -1,59 +1,18 @@
 import { EventEmitter } from "events";
 import randomstring from "randomstring";
 import WebSocket from "ws";
+import { allQuoteFields } from "./consts/quoteFields";
+import TypedEmitter from "typed-emitter";
 
 import * as SIO from "./IOProtocol";
 import { SIOPacket } from "./SIOPacket";
 
-export class TVWebSocket extends EventEmitter {
-  private static ALL_QUOTE_FIELDS = [
-    "ch",
-    "chp",
-    "current_session",
-    "description",
-    "local_description",
-    "language",
-    "exchange",
-    "fractional",
-    "is_tradable",
-    "lp",
-    "lp_time",
-    "minmov",
-    "minmove2",
-    "original_name",
-    "pricescale",
-    "pro_name",
-    "short_name",
-    "type",
-    "update_mode",
-    "volume",
-    "currency_code",
-    "ask",
-    "bid",
-    "fundamentals",
-    "high_price",
-    "is_tradable",
-    "low_price",
-    "open_price",
-    "prev_close_price",
-    "rch",
-    "rchp",
-    "rtc",
-    "rtc_time",
-    "status",
-    "basic_eps_net_income",
-    "beta_1_year",
-    "earnings_per_share_basic_ttm",
-    "industry",
-    "market_cap_basic",
-    "price_earnings_ttm",
-    "sector",
-    "volume",
-    "dividends_yield",
-    "timezone",
-  ];
-  private static DEFAULT_TIMEOUT = 3000;
+type MessageEvents = {
+  data: (simpleOrProName: string, status: string, data: any) => void;
+};
 
+export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<MessageEvents>) {
+  private static DEFAULT_TIMEOUT = 3000;
   private static UNAUTHORIZED_USER_TOKEN = "unauthorized_user_token";
   private static generateSession() {
     return "qs_" + randomstring.generate({ length: 12, charset: "alphabetic" });
@@ -108,7 +67,7 @@ export class TVWebSocket extends EventEmitter {
     if (data.session_id) {
       this.setAuthToken(TVWebSocket.UNAUTHORIZED_USER_TOKEN);
       this.createQuoteSession();
-      this.setQuoteFields(TVWebSocket.ALL_QUOTE_FIELDS);
+      this.setQuoteFields(allQuoteFields);
       return;
     }
     if (
