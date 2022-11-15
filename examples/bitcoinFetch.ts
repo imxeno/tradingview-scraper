@@ -1,10 +1,10 @@
-const { TradingViewAPI } = require("../dist");
+import { TradingViewAPI } from "../";
 
 const bitcoinSymbol = "BTCUSD";
 const tv = new TradingViewAPI();
 
 tv.setup().then(() =>
-  tv.getTicker(bitcoinSymbol).then(ticker =>
+  tv.getTicker(bitcoinSymbol).then((ticker) =>
     ticker
       .fetch()
       .then(console.log)
