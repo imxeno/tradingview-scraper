@@ -10,7 +10,7 @@ tv.setup().then(() => {
     let last = 0;
     ticker.on("update", (data) => {
       if (data.lp && data.lp !== last) {
-        process.stdout.clearLine();
+        process.stdout.clearLine(0);
         process.stdout.cursorTo(0);
         process.stdout.write(
           `[${bitcoinSymbol}] ${last > data.lp ? "-" : "+"} ${data.lp.toFixed(
