@@ -7,10 +7,9 @@ module.exports = {
   useTabs: false,
   semi: true,
   singleQuote: true,
-  arrowParens: "avoid",
-  trailingComma: "none",
-  endOfLine: "lf",
-  importOrder: ["__", "<THIRD_PARTY_MODULES>", "^[./]"],
+  arrowParens: 'avoid',
+  trailingComma: 'none',
+  importOrder: ['__', '<THIRD_PARTY_MODULES>', '^[./]'],
   importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
+  importOrderSortSpecifiers: true
 };
