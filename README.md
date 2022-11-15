@@ -29,7 +29,7 @@ pnpm add tradingview-scraper
 
 ## Usage
 
-Coming soon, for now just check [Examples](./examples)
+Coming soon, for now just check [Examples](./examples).
 
 ## License
 
