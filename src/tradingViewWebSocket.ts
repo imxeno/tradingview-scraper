@@ -1,17 +1,17 @@
 import { EventEmitter } from 'events';
 import randomstring from 'randomstring';
 import WebSocket from 'ws';
-import { allQuoteFields } from './consts/quoteFields';
+import { allQuoteFields } from './consts/QuoteFields';
 import TypedEmitter from 'typed-emitter';
 
-import * as SIO from './utils/sioProtocol';
-import { SIOPacket } from './interfaces/sioPacket';
+import * as SIO from './utils/SIOProtocol';
+import { SIOPacket } from './interfaces/SIOPacket';
 
 type MessageEvents = {
   data: (simpleOrProName: string, status: string, data: any) => void;
 };
 
-export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<MessageEvents>) {
+export class TradingViewWebSocket extends (EventEmitter as new () => TypedEmitter<MessageEvents>) {
   private static DEFAULT_TIMEOUT = 3000;
   private static UNAUTHORIZED_USER_TOKEN = 'unauthorized_user_token';
   private static generateSession() {
@@ -65,7 +65,7 @@ export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<Message
     const data = packet.data;
     // Handle session packet
     if (data.session_id) {
-      this.setAuthToken(TVWebSocket.UNAUTHORIZED_USER_TOKEN);
+      this.setAuthToken(TradingViewWebSocket.UNAUTHORIZED_USER_TOKEN);
       this.createQuoteSession();
       this.setQuoteFields(allQuoteFields);
       return;
@@ -87,7 +87,7 @@ export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<Message
   }
 
   private createQuoteSession() {
-    this.quoteSession = TVWebSocket.generateSession();
+    this.quoteSession = TradingViewWebSocket.generateSession();
     this.wsSend('quote_create_session', [this.quoteSession]);
   }
 
@@ -124,7 +124,7 @@ export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<Message
 
   private async wsReady(timeout?: number) {
     if (!timeout) {
-      timeout = TVWebSocket.DEFAULT_TIMEOUT;
+      timeout = TradingViewWebSocket.DEFAULT_TIMEOUT;
     }
     if (this.ws?.readyState === WebSocket.OPEN) {
       return;
@@ -147,7 +147,7 @@ export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<Message
 
   private async tvSessionReady(timeout?: number) {
     if (!timeout) {
-      timeout = TVWebSocket.DEFAULT_TIMEOUT;
+      timeout = TradingViewWebSocket.DEFAULT_TIMEOUT;
     }
     await this.wsReady(timeout);
 

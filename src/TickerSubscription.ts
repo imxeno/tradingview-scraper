@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
-import { TradingViewAPI } from './tradingViewAPI';
+import { TradingViewAPI } from './TradingViewAPI';
 import TypedEmitter from 'typed-emitter';
-import { TickerData } from './interfaces/tickerData';
+import { TickerData } from './interfaces/TickerData';
 
 type MessageEvents = {
   newListener: () => void;

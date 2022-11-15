@@ -1,4 +1,4 @@
-import { SIOPacket } from '../interfaces/sioPacket';
+import { SIOPacket } from '../interfaces/SIOPacket';
 
 export const parseMessages = (str: string): SIOPacket[] => {
   const packets = [];

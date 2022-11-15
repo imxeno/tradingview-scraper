@@ -1,9 +1,9 @@
-import { TickerSubscription } from './tickerSubscription';
-import { TVWebSocket } from './tradingViewWebSocket';
+import { TickerSubscription } from './TickerSubscription';
+import { TradingViewWebSocket } from './TradingViewWebSocket';
 
 export class TradingViewAPI {
   private subscriptionMap: Map<string, Set<TickerSubscription>> = new Map();
-  private ws: TVWebSocket = new TVWebSocket();
+  private ws: TradingViewWebSocket = new TradingViewWebSocket();
 
   public async setup() {
     this.ws.on('data', (simpleOrProName: string, status: string, data: any) => {
