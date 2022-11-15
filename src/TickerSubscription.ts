@@ -1,6 +1,6 @@
-import { EventEmitter } from "events";
-import { TradingViewAPI } from "./TradingViewAPI";
-import TypedEmitter from "typed-emitter";
+import { EventEmitter } from 'events';
+import { TradingViewAPI } from './TradingViewAPI';
+import TypedEmitter from 'typed-emitter';
 
 type TickerData = any;
 
@@ -21,7 +21,7 @@ export class TickerSubscription extends (EventEmitter as new () => TypedEmitter<
     this.api = api;
     this.simpleOrProName = simpleOrProName;
     this.refreshDue();
-    this.on("newListener", () => {
+    this.on('newListener', () => {
       if (this.destroyed) {
         this.destroyed = false;
         this.api.ensureRegistered(this);
@@ -33,9 +33,9 @@ export class TickerSubscription extends (EventEmitter as new () => TypedEmitter<
     this.tickerData = {
       ...this.tickerData,
       ...tickerDataPatch,
-      last_updated: new Date(),
+      last_updated: new Date()
     };
-    this.emit("update", this.tickerData);
+    this.emit('update', this.tickerData);
   }
 
   public async fetch(): Promise<TickerData> {
@@ -45,7 +45,7 @@ export class TickerSubscription extends (EventEmitter as new () => TypedEmitter<
   }
 
   public get canBeDestroyed() {
-    return this.due < Date.now() && this.listenerCount("update") === 0;
+    return this.due < Date.now() && this.listenerCount('update') === 0;
   }
 
   private refreshDue() {

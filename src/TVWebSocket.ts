@@ -1,11 +1,11 @@
-import { EventEmitter } from "events";
-import randomstring from "randomstring";
-import WebSocket from "ws";
-import { allQuoteFields } from "./consts/quoteFields";
-import TypedEmitter from "typed-emitter";
+import { EventEmitter } from 'events';
+import randomstring from 'randomstring';
+import WebSocket from 'ws';
+import { allQuoteFields } from './consts/quoteFields';
+import TypedEmitter from 'typed-emitter';
 
-import * as SIO from "./IOProtocol";
-import { SIOPacket } from "./SIOPacket";
+import * as SIO from './utils/sioProtocol';
+import { SIOPacket } from './interfaces/sioPacket';
 
 type MessageEvents = {
   data: (simpleOrProName: string, status: string, data: any) => void;
@@ -13,9 +13,9 @@ type MessageEvents = {
 
 export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<MessageEvents>) {
   private static DEFAULT_TIMEOUT = 3000;
-  private static UNAUTHORIZED_USER_TOKEN = "unauthorized_user_token";
+  private static UNAUTHORIZED_USER_TOKEN = 'unauthorized_user_token';
   private static generateSession() {
-    return "qs_" + randomstring.generate({ length: 12, charset: "alphabetic" });
+    return 'qs_' + randomstring.generate({ length: 12, charset: 'alphabetic' });
   }
 
   private ws: WebSocket | null = null;
@@ -24,10 +24,10 @@ export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<Message
 
   public async connect() {
     this.quoteSession = null;
-    this.ws = new WebSocket("wss://data.tradingview.com/socket.io/websocket", {
-      origin: "https://data.tradingview.com",
+    this.ws = new WebSocket('wss://data.tradingview.com/socket.io/websocket', {
+      origin: 'https://data.tradingview.com'
     });
-    this.ws.on("message", (message: string) => this.wsOnMessage(message));
+    this.ws.on('message', (message: string) => this.wsOnMessage(message));
     await this.tvSessionReady();
   }
 
@@ -59,7 +59,7 @@ export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<Message
   private onPacket(packet: SIOPacket) {
     if (packet.isKeepAlive) {
       // Handle protocol keepalive packets
-      this.wsSendRaw("~h~" + (packet.data as string));
+      this.wsSendRaw('~h~' + (packet.data as string));
       return;
     }
     const data = packet.data;
@@ -72,43 +72,41 @@ export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<Message
     }
     if (
       data.m &&
-      data.m === "qsd" &&
-      typeof data.p === "object" &&
+      data.m === 'qsd' &&
+      typeof data.p === 'object' &&
       data.p.length > 1 &&
       data.p[0] === this.quoteSession
     ) {
       const tickerData = data.p[1];
-      this.emit("data", tickerData.n, tickerData.s, tickerData.v);
+      this.emit('data', tickerData.n, tickerData.s, tickerData.v);
     }
   }
 
   private setAuthToken(token: string) {
-    this.wsSend("set_auth_token", [token]);
+    this.wsSend('set_auth_token', [token]);
   }
 
   private createQuoteSession() {
     this.quoteSession = TVWebSocket.generateSession();
-    this.wsSend("quote_create_session", [this.quoteSession]);
+    this.wsSend('quote_create_session', [this.quoteSession]);
   }
 
   private setQuoteFields(fields: string[]) {
-    this.wsSend("quote_set_fields", [this.quoteSession, ...fields]);
+    this.wsSend('quote_set_fields', [this.quoteSession, ...fields]);
   }
 
   private addQuoteSymbol(symbol: string) {
     this.ws?.send(
-      SIO.createMessage("quote_add_symbols", [
+      SIO.createMessage('quote_add_symbols', [
         this.quoteSession,
         symbol,
-        { flags: ["force_permission"] },
+        { flags: ['force_permission'] }
       ])
     );
   }
 
   private removeQuoteSymbol(symbol: string) {
-    this.ws?.send(
-      SIO.createMessage("quote_remove_symbols", [this.quoteSession, symbol])
-    );
+    this.ws?.send(SIO.createMessage('quote_remove_symbols', [this.quoteSession, symbol]));
   }
 
   private wsOnMessage(data: string) {
@@ -137,10 +135,10 @@ export class TVWebSocket extends (EventEmitter as new () => TypedEmitter<Message
         opened = true;
         resolve();
       };
-      this.ws?.once("open", onOpen);
+      this.ws?.once('open', onOpen);
       setTimeout(() => {
         if (!opened) {
-          this.ws?.removeListener("open", onOpen);
+          this.ws?.removeListener('open', onOpen);
           reject();
         }
       }, timeout);

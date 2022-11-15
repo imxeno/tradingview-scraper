@@ -1,13 +1,13 @@
-import { TickerSubscription } from "./TickerSubscription";
-import { TVWebSocket } from "./TVWebSocket";
+import { TickerSubscription } from './TickerSubscription';
+import { TVWebSocket } from './TVWebSocket';
 
 export class TradingViewAPI {
   private subscriptionMap: Map<string, Set<TickerSubscription>> = new Map();
   private ws: TVWebSocket = new TVWebSocket();
 
   public async setup() {
-    this.ws.on("data", (simpleOrProName: string, status: string, data: any) => {
-      if (status !== "ok") {
+    this.ws.on('data', (simpleOrProName: string, status: string, data: any) => {
+      if (status !== 'ok') {
         return;
       }
       const subs = this.subscriptionMap.get(simpleOrProName);
@@ -58,10 +58,10 @@ export class TradingViewAPI {
           return;
         }
         updated = true;
-        ticker.removeListener("update", onUpdate);
+        ticker.removeListener('update', onUpdate);
         resolve();
       };
-      ticker.on("update", onUpdate);
+      ticker.on('update', onUpdate);
       if (!tickers) {
         await this.ws.registerSymbol(ticker.simpleOrProName);
         this.subscriptionMap.set(ticker.simpleOrProName, new Set([ticker]));
@@ -71,8 +71,8 @@ export class TradingViewAPI {
       }
       setTimeout(() => {
         if (!updated) {
-          ticker.removeListener("update", onUpdate);
-          reject("Timed out.");
+          ticker.removeListener('update', onUpdate);
+          reject('Timed out.');
         }
       }, 3000);
     });
