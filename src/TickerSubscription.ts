@@ -1,19 +1,18 @@
 import { EventEmitter } from 'events';
-import { TradingViewAPI } from './TradingViewAPI';
+import { TradingViewAPI } from './tradingViewAPI';
 import TypedEmitter from 'typed-emitter';
-
-type TickerData = any;
+import { TickerData } from './interfaces/tickerData';
 
 type MessageEvents = {
   newListener: () => void;
-  update: (ticketData: any) => void;
+  update: (tickerData: TickerData) => void;
 };
 
 export class TickerSubscription extends (EventEmitter as new () => TypedEmitter<MessageEvents>) {
   simpleOrProName: string;
   due!: number;
   private api: TradingViewAPI;
-  private tickerData: TickerData;
+  private tickerData!: TickerData;
   destroyed = false;
 
   constructor(api: TradingViewAPI, simpleOrProName: string) {

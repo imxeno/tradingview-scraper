@@ -1,5 +1,5 @@
-import { TickerSubscription } from './TickerSubscription';
-import { TVWebSocket } from './TVWebSocket';
+import { TickerSubscription } from './tickerSubscription';
+import { TVWebSocket } from './tradingViewWebSocket';
 
 export class TradingViewAPI {
   private subscriptionMap: Map<string, Set<TickerSubscription>> = new Map();
