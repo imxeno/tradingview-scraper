@@ -3,7 +3,7 @@ import randomstring from "randomstring";
 import WebSocket from "ws";
 
 import * as SIO from "./IOProtocol";
-import { ISIOPacket } from "./SIOPacket";
+import { SIOPacket } from "./SIOPacket";
 
 export class TVWebSocket extends EventEmitter {
   private static ALL_QUOTE_FIELDS = [
@@ -50,7 +50,7 @@ export class TVWebSocket extends EventEmitter {
     "sector",
     "volume",
     "dividends_yield",
-    "timezone"
+    "timezone",
   ];
   private static DEFAULT_TIMEOUT = 3000;
 
@@ -66,7 +66,7 @@ export class TVWebSocket extends EventEmitter {
   public async connect() {
     this.quoteSession = null;
     this.ws = new WebSocket("wss://data.tradingview.com/socket.io/websocket", {
-      origin: "https://data.tradingview.com"
+      origin: "https://data.tradingview.com",
     });
     this.ws.on("message", (message: string) => this.wsOnMessage(message));
     await this.tvSessionReady();
@@ -76,7 +76,7 @@ export class TVWebSocket extends EventEmitter {
     if (!this.ws) {
       return;
     }
-    this.ws!.close();
+    this.ws.close();
     this.ws = null;
     this.quoteSession = null;
     this.subscriptions = new Set();
@@ -97,7 +97,7 @@ export class TVWebSocket extends EventEmitter {
     this.removeQuoteSymbol(symbol);
   }
 
-  private onPacket(packet: ISIOPacket) {
+  private onPacket(packet: SIOPacket) {
     if (packet.isKeepAlive) {
       // Handle protocol keepalive packets
       this.wsSendRaw("~h~" + (packet.data as string));
@@ -133,55 +133,55 @@ export class TVWebSocket extends EventEmitter {
   }
 
   private setQuoteFields(fields: string[]) {
-    this.wsSend("quote_set_fields", [this.quoteSession!, ...fields]);
+    this.wsSend("quote_set_fields", [this.quoteSession, ...fields]);
   }
 
   private addQuoteSymbol(symbol: string) {
-    this.ws!.send(
+    this.ws?.send(
       SIO.createMessage("quote_add_symbols", [
-        this.quoteSession!,
+        this.quoteSession,
         symbol,
-        { flags: ["force_permission"] }
+        { flags: ["force_permission"] },
       ])
     );
   }
 
   private removeQuoteSymbol(symbol: string) {
-    this.ws!.send(
-      SIO.createMessage("quote_remove_symbols", [this.quoteSession!, symbol])
+    this.ws?.send(
+      SIO.createMessage("quote_remove_symbols", [this.quoteSession, symbol])
     );
   }
 
   private wsOnMessage(data: string) {
     const packets = SIO.parseMessages(data);
-    packets.forEach((packet: ISIOPacket) => this.onPacket(packet));
+    packets.forEach((packet: SIOPacket) => this.onPacket(packet));
   }
 
   private wsSendRaw(message: string) {
-    this.ws!.send(SIO.prependHeader(message));
+    this.ws?.send(SIO.prependHeader(message));
   }
 
   private wsSend(func: string, args: any[]) {
-    this.ws!.send(SIO.createMessage(func, args));
+    this.ws?.send(SIO.createMessage(func, args));
   }
 
   private async wsReady(timeout?: number) {
     if (!timeout) {
       timeout = TVWebSocket.DEFAULT_TIMEOUT;
     }
-    if (this.ws!.readyState === WebSocket.OPEN) {
+    if (this.ws?.readyState === WebSocket.OPEN) {
       return;
     }
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       let opened = false;
       const onOpen = () => {
         opened = true;
         resolve();
       };
-      this.ws!.once("open", onOpen);
+      this.ws?.once("open", onOpen);
       setTimeout(() => {
         if (!opened) {
-          this.ws!.removeListener("open", onOpen);
+          this.ws?.removeListener("open", onOpen);
           reject();
         }
       }, timeout);
@@ -194,7 +194,7 @@ export class TVWebSocket extends EventEmitter {
     }
     await this.wsReady(timeout);
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const interval = setInterval(() => {
         if (this.quoteSession !== null) {
           resolve();

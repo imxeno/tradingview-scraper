@@ -27,7 +27,7 @@ export class TickerSubscription extends EventEmitter {
     this.tickerData = {
       ...this.tickerData,
       ...tickerDataPatch,
-      last_updated: new Date()
+      last_updated: new Date(),
     };
     this.emit("update", this.tickerData);
   }
@@ -38,11 +38,8 @@ export class TickerSubscription extends EventEmitter {
     return this.tickerData;
   }
 
-  public canBeDestroyed(): boolean {
-    if (this.due < Date.now() && this.listenerCount("update") === 0) {
-      return true;
-    }
-    return false;
+  public get canBeDestroyed() {
+    return this.due < Date.now() && this.listenerCount("update") === 0;
   }
 
   public onDestroy() {

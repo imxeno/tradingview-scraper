@@ -1,18 +1,21 @@
-import { ISIOPacket } from "./SIOPacket";
+import { SIOPacket } from "./SIOPacket";
 
-export const parseMessages = (str: string): ISIOPacket[] => {
+export const parseMessages = (str: string): SIOPacket[] => {
   const packets = [];
   while (str.length > 0) {
     const x = /~m~(\d+)~m~/.exec(str);
-    const packet = str.slice(x![0].length, x![0].length + parseInt(x![1], 10));
-    if (packet.substr(0, 3) !== "~h~") {
+    if (!x || x.length < 2) {
+      throw new Error("Invalid Socket.IO packet");
+    }
+    const packet = str.slice(x[0].length, x[0].length + parseInt(x[1], 10));
+    if (packet.slice(0, 3) !== "~h~") {
       packets.push({ isKeepAlive: false, data: JSON.parse(packet) });
     } else {
-      packets.push({ isKeepAlive: true, data: packet.substr(3) });
+      packets.push({ isKeepAlive: true, data: packet.slice(3) });
     }
 
-    str.slice(0, x![0].length);
-    str = str.slice(x![0].length + parseInt(x![1], 10));
+    str.slice(0, x[0].length);
+    str = str.slice(x[0].length + parseInt(x[1], 10));
   }
   return packets;
 };
@@ -28,6 +31,6 @@ export const createMessage = (func: string, paramList: any[]) => {
 const constructMessage = (func: string, paramList: any[]) => {
   return JSON.stringify({
     m: func,
-    p: paramList
+    p: paramList,
   });
 };

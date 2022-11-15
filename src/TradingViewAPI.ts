@@ -14,12 +14,12 @@ export class TradingViewAPI {
       if (!subs) {
         return;
       }
-      subs!.forEach((s: TickerSubscription) => {
-        if (s.canBeDestroyed()) {
-          subs!.delete(s);
+      subs.forEach((s: TickerSubscription) => {
+        if (s.canBeDestroyed) {
+          subs.delete(s);
           s.onDestroy();
-          if (subs!.size === 0) {
-            this.ws!.unregisterSymbol(s.simpleOrProName);
+          if (subs.size === 0) {
+            this.ws.unregisterSymbol(s.simpleOrProName);
             this.subscriptionMap.delete(s.simpleOrProName);
           }
           return;
@@ -47,9 +47,10 @@ export class TradingViewAPI {
 
   public async ensureRegistered(ticker: TickerSubscription): Promise<void> {
     const tickers = this.subscriptionMap.get(ticker.simpleOrProName);
-    if (tickers && tickers!.has(ticker)) {
+    if (tickers && tickers.has(ticker)) {
       return;
     }
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       let updated = false;
       const onUpdate = (data: any) => {
@@ -64,9 +65,9 @@ export class TradingViewAPI {
       if (!tickers) {
         await this.ws.registerSymbol(ticker.simpleOrProName);
         this.subscriptionMap.set(ticker.simpleOrProName, new Set([ticker]));
-      } else if (!tickers!.has(ticker)) {
+      } else if (!tickers.has(ticker)) {
         await this.ws.registerSymbol(ticker.simpleOrProName);
-        this.subscriptionMap.set(ticker.simpleOrProName, tickers!.add(ticker));
+        this.subscriptionMap.set(ticker.simpleOrProName, tickers.add(ticker));
       }
       setTimeout(() => {
         if (!updated) {
