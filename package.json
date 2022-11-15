@@ -1,6 +1,6 @@
 {
   "name": "tradingview-scraper",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "A gateway to TradingView's data for your Node.js application!",
   "keywords": [
     "tradingview",
@@ -18,18 +18,27 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "randomstring": "^1.1.5",
-    "ws": "^7.2.0"
+    "randomstring": "^1.2.3",
+    "ws": "^8.11.0"
   },
   "devDependencies": {
-    "@types/randomstring": "^1.1.6",
-    "@types/ws": "^6.0.4",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.2"
+    "@trivago/prettier-plugin-sort-imports": "^3.4.0",
+    "@types/node": "^18.11.9",
+    "@types/randomstring": "^1.1.8",
+    "@types/ws": "^8.5.3",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "@typescript-eslint/parser": "^5.43.0",
+    "eslint": "^8.27.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.9.1",
+    "typed-emitter": "^2.1.0",
+    "typescript": "^4.9.3"
   },
   "scripts": {
     "build": "tsc",
-    "lint": "tslint --project ./",
+    "lint": "eslint ./src --fix",
     "prepublish": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
