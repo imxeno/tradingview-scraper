@@ -1,2 +1,6 @@
-src/
-.github/
+*
+!dist/**/*
+!package.json
+!package-lock.json
+!LICENSE
+!README.md
