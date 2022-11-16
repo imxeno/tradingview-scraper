@@ -1,7 +1,8 @@
 import { SIOPacket } from '../interfaces/SIOPacket';
 
-export const parseMessages = (str: string): SIOPacket[] => {
+export const parseMessages = (buffer: Buffer): SIOPacket[] => {
   const packets = [];
+  let str = buffer.toString('utf-8');
   while (str.length > 0) {
     const x = /~m~(\d+)~m~/.exec(str);
     if (!x || x.length < 2) {

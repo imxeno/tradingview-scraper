@@ -109,7 +109,7 @@ export class TradingViewWebSocket extends (EventEmitter as new () => TypedEmitte
     this.ws?.send(SIO.createMessage('quote_remove_symbols', [this.quoteSession, symbol]));
   }
 
-  private wsOnMessage(data: string) {
+  private wsOnMessage(data: Buffer) {
     const packets = SIO.parseMessages(data);
     packets.forEach((packet: SIOPacket) => this.onPacket(packet));
   }
