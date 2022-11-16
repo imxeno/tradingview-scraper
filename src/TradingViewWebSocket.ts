@@ -27,7 +27,7 @@ export class TradingViewWebSocket extends (EventEmitter as new () => TypedEmitte
     this.ws = new WebSocket('wss://data.tradingview.com/socket.io/websocket', {
       origin: 'https://data.tradingview.com'
     });
-    this.ws.on('message', (message: string) => this.wsOnMessage(message));
+    this.ws.on('message', message => this.wsOnMessage(message.toString()));
     await this.tvSessionReady();
   }
 
@@ -109,7 +109,7 @@ export class TradingViewWebSocket extends (EventEmitter as new () => TypedEmitte
     this.ws?.send(SIO.createMessage('quote_remove_symbols', [this.quoteSession, symbol]));
   }
 
-  private wsOnMessage(data: Buffer) {
+  private wsOnMessage(data: string) {
     const packets = SIO.parseMessages(data);
     packets.forEach((packet: SIOPacket) => this.onPacket(packet));
   }
