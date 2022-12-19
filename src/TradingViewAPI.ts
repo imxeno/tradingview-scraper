@@ -34,6 +34,10 @@ export class TradingViewAPI {
     this.ws.disconnect();
   }
 
+  public setAuthToken(token: string) {
+    this.ws.setAuthToken(token);
+  }
+
   public async getTicker(simpleOrProName: string): Promise<TickerSubscription> {
     const tickers = this.subscriptionMap.get(simpleOrProName);
     if (tickers) {
