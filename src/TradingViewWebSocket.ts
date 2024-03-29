@@ -12,15 +12,21 @@ type MessageEvents = {
 };
 
 export class TradingViewWebSocket extends (EventEmitter as new () => TypedEmitter<MessageEvents>) {
+  public static UNAUTHORIZED_USER_TOKEN = 'unauthorized_user_token';
   private static DEFAULT_TIMEOUT = 3000;
-  private static UNAUTHORIZED_USER_TOKEN = 'unauthorized_user_token';
   private static generateSession() {
     return 'qs_' + randomstring.generate({ length: 12, charset: 'alphabetic' });
   }
 
+  private authToken = TradingViewWebSocket.UNAUTHORIZED_USER_TOKEN;
+
   private ws: WebSocket | null = null;
   private quoteSession: string | null = null;
   private subscriptions: Set<string> = new Set();
+
+  public setAuthToken(token: string) {
+    this.authToken = token;
+  }
 
   public async connect() {
     this.quoteSession = null;
@@ -65,7 +71,7 @@ export class TradingViewWebSocket extends (EventEmitter as new () => TypedEmitte
     const data = packet.data;
     // Handle session packet
     if (data.session_id) {
-      this.setAuthToken(TradingViewWebSocket.UNAUTHORIZED_USER_TOKEN);
+      this.sendAuthToken();
       this.createQuoteSession();
       this.setQuoteFields(allQuoteFields);
       return;
@@ -82,8 +88,8 @@ export class TradingViewWebSocket extends (EventEmitter as new () => TypedEmitte
     }
   }
 
-  private setAuthToken(token: string) {
-    this.wsSend('set_auth_token', [token]);
+  private sendAuthToken() {
+    this.wsSend('set_auth_token', [this.authToken]);
   }
 
   private createQuoteSession() {
