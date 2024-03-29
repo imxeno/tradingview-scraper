@@ -96,13 +96,7 @@ export class TradingViewWebSocket extends (EventEmitter as new () => TypedEmitte
   }
 
   private addQuoteSymbol(symbol: string) {
-    this.ws?.send(
-      SIO.createMessage('quote_add_symbols', [
-        this.quoteSession,
-        symbol,
-        { flags: ['force_permission'] }
-      ])
-    );
+    this.ws?.send(SIO.createMessage('quote_add_symbols', [this.quoteSession, symbol]));
   }
 
   private removeQuoteSymbol(symbol: string) {
